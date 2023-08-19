@@ -1,0 +1,73 @@
+syntax = "proto2";
+import "objects.proto";
+
+// A request to login.
+message LoginRequest {
+  // The account username.
+  required string username = 1;
+  // The password for the account.
+  required string password = 2;
+}
+
+// A response to logging in.
+message LoginResponse {
+  // The username of the connected account.
+  required string username = 1;
+  // The characters registered to this account, or empty if the login failed.
+  repeated ObjectReference characters = 2;
+  // An error message indicating a failed login.
+  optional string error_message = 3;
+}
+
+// A request to create a user.
+message CreateUserRequest {
+  // The username to use.
+  required string username = 1;
+  // The password to use. This will be hashed by the server.
+  required string password = 2;
+}
+
+// A response to creating a user.
+message CreateUserResponse {
+  oneof response_type {
+    // A login response.
+    LoginResponse response = 1;
+    /// An error message describing what went wrong.
+    string error_message = 2;
+  }
+}
+
+// A request to connect a character.
+message ConnectCharacterRequest {
+  // The ID of the character to connect to.
+  required int64 id = 1;
+}
+
+// A response to connecting to a character.
+message ConnectCharacterResponse {
+  // The ID of the character.
+  required int64 id = 1;
+  oneof response_type {
+    // The name of the character.
+    string name = 2;
+    // An error message describing what went wrong.
+    string error_message = 3;
+  }
+  // Whether or not this character is an administrator.
+  required bool is_admin = 4;
+}
+
+// A request to create a new character.
+message CreateCharacterRequest {
+  // The name of the character to create.
+  required string name = 1;
+}
+
+// The response to creating a character.
+message CreateCharacterResponse {
+  oneof response_type {
+    string error_message = 1;
+    // The character to connect to.
+    ConnectCharacterResponse response = 2;
+  }
+}

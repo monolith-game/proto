@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+import "users.proto";
+
+// A message from a server to a client.
+message ClientMessage {
+  oneof message_type {
+    LoginResponse login_response = 1;
+    CreateUserResponse create_user_response = 2;
+    ConnectCharacterResponse connect_character_response = 3;
+    CreateCharacterResponse create_character_response = 4;
+  }
+}
